@@ -5,7 +5,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class SyncObjectReceiver {
 
+    private final SyncObjectRepository syncObjectRepository;
+
+    public SyncObjectReceiver(SyncObjectRepository syncObjectRepository) {
+        this.syncObjectRepository = syncObjectRepository;
+    }
+
     public void receive(SyncObject syncObject) {
-        System.out.println(syncObject);
+        syncObjectRepository.save(syncObject);
     }
 }
