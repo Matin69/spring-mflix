@@ -3,14 +3,21 @@ package com.mflix.app;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mflix.app.common.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Aspect
@@ -27,36 +34,41 @@ public class AspectConfigurer {
     }
 
     @Pointcut("target(com.mflix.app.common.RestCrudController)")
-    public void afterReturningResourcesPointcut() {
+    public void restControllerMethodsPointCut() {
     }
 
     @Pointcut("target(com.mflix.app.common.RestCrudController) && execution(* save*(..))")
-    public void afterSavingPointCut() {
+    public void restControllerSaveMethodPointCut() {
 
     }
 
-    @Around(value = "afterReturningResourcesPointcut()")
+    @Around(value = "restControllerMethodsPointCut()")
     public ResponseEntity<?> afterReturningResourcesAdvice(ProceedingJoinPoint point) throws Throwable {
         ResponseEntity<Object> responseEntity = (ResponseEntity<Object>) point.proceed(point.getArgs());
-        RestResponse<Object> restResponse = (RestResponse<Object>) responseEntity.getBody();
-        Object body = restResponse.source;
-        List<Object> entities = new ArrayList<>();
-        if (body instanceof List) {
-            entities = (List<Object>) body;
+        Object processedResource = responseEntity.getBody();
+        List<Object> resourcesCollection = new ArrayList<>();
+        if (processedResource instanceof List) {
+            resourcesCollection = (List<Object>) processedResource;
         } else {
-            entities.add(body);
+            resourcesCollection.add(processedResource);
         }
-        Converter converter = converterRegistry.getConverter(entities.get(0));
-        List<Object> convertedEntities = entities.stream()
+        Converter converter = converterRegistry.getConverter(resourcesCollection.get(0));
+        List<Object> convertedEntities = resourcesCollection.stream()
                 .map(converter::convert)
                 .collect(Collectors.toList());
-        restResponse.source = convertedEntities;
-        return ResponseEntity.status(responseEntity.getStatusCode())
-                .headers(responseEntity.getHeaders())
-                .body(restResponse);
+        HttpServletRequest currenRequest = getCurrentHttpRequest().orElseThrow(RuntimeException::new);
+        return ResponseEntity
+                .status(responseEntity.getStatusCode())
+                .body(
+                        new RestResponse<>(
+                                true,
+                                currenRequest.getMethod(),
+                                convertedEntities
+                        )
+                );
     }
 
-    @AfterReturning(pointcut = "afterSavingPointCut()", returning = "savedObject")
+    @AfterReturning(pointcut = "restControllerSaveMethodPointCut()", returning = "savedObject")
     public void afterSavingAdvice(Object savedObject) throws JsonProcessingException {
         ResponseEntity<Object> responseEntity = (ResponseEntity<Object>) savedObject;
         RestResponse<Object> restResponse = (RestResponse<Object>) responseEntity.getBody();
@@ -66,5 +78,12 @@ public class AspectConfigurer {
         String collectionName = entity.getCollectionName();
         SyncObject syncObject = new SyncObject(collectionName, json);
         rabbitTemplate.convertAndSend("elastic-sync-exchange", "elastic-sync", syncObject);
+    }
+
+    public static Optional<HttpServletRequest> getCurrentHttpRequest() {
+        return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
+                .filter(ServletRequestAttributes.class::isInstance)
+                .map(ServletRequestAttributes.class::cast)
+                .map(ServletRequestAttributes::getRequest);
     }
 }
