@@ -1,7 +1,6 @@
 package com.mflix.app.comment;
 
 import com.mflix.app.common.RestExceptions;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +19,12 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Comment>> search() {
+    public ResponseEntity<List<Comment>> search(CommentQueryParams commentQueryParams) {
         return ResponseEntity.ok(
-                mongoCommentRepository.findAll(Pageable.ofSize(10))
-                        .stream()
-                        .toList()
+                mongoCommentRepository.search(
+                        commentQueryParams.getMovieId(),
+                        commentQueryParams.getPagination()
+                )
         );
     }
 

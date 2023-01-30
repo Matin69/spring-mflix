@@ -26,6 +26,9 @@ public class ApisResponseConverter {
         } else {
             contentCollection.add(content);
         }
+        if (contentCollection.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         Converter converter = converterRegistry.getConverter(contentCollection.get(0));
         List<Object> convertedEntities = contentCollection
                 .stream()
