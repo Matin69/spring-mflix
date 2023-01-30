@@ -23,7 +23,6 @@
 
     <modules>
         <module>app</module>
-        <module>elastic-syncer</module>
     </modules>
 
     <dependencies>

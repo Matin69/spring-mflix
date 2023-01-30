@@ -1,6 +1,5 @@
 package com.mflix.app.movie;
 
-import com.mflix.app.common.RestCrudController;
 import com.mflix.app.common.RestExceptions;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/movies")
-public class MovieController implements RestCrudController {
+public class MovieController {
 
     private final MovieRepository movieRepository;
 

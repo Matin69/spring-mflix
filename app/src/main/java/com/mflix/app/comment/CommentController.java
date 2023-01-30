@@ -1,6 +1,5 @@
 package com.mflix.app.comment;
 
-import com.mflix.app.common.RestCrudController;
 import com.mflix.app.common.RestExceptions;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
-public class CommentController implements RestCrudController {
+public class CommentController {
 
     private final CommentRepository mongoCommentRepository;
 

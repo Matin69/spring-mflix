@@ -1,6 +1,5 @@
 package com.mflix.app.comment;
 
-import com.mflix.app.common.AbstractEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -9,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.util.Date;
 
 @Document("comments")
-public class Comment implements AbstractEntity {
+public class Comment {
 
     @MongoId(FieldType.OBJECT_ID)
     public String id;
@@ -39,10 +38,5 @@ public class Comment implements AbstractEntity {
         this.movieId = movieId;
         this.text = text;
         this.date = date;
-    }
-
-    @Override
-    public String getCollectionName() {
-        return "comments";
     }
 }
