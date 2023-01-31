@@ -23,6 +23,7 @@ public class CommentController {
         return ResponseEntity.ok(
                 mongoCommentRepository.search(
                         commentQueryParams.getMovieId(),
+                        commentQueryParams.getEmail(),
                         commentQueryParams.getPagination()
                 )
         );

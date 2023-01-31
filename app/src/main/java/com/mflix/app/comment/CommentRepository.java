@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CommentRepository extends MongoRepository<Comment, String> {
 
-    @Query("{ $or : [ { $expr: { $eq: ['?0', 'null'] } } , { movie_id : ObjectId(?0) } ] }")
-    List<Comment> search(String movieId, Pageable pageable);
+    @Query("{ $and : [ { $or : [ { $expr: { $eq: ['?1', 'null'] } } , { email : ?1 } ] } ] }")
+    List<Comment> search(String movieId, String email, Pageable pageable);
 }
