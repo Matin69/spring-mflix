@@ -1,12 +1,10 @@
 package com.mflix.app.movie;
 
 import com.mflix.app.common.RestExceptions;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/movies")
@@ -18,13 +16,9 @@ public class MovieController {
         this.movieRepository = movieRepository;
     }
 
-
     @GetMapping
-    public ResponseEntity<List<Movie>> search() {
-        List<Movie> foundMovies = movieRepository.findAll(Pageable.ofSize(10))
-                .stream()
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(foundMovies);
+    public ResponseEntity<List<Movie>> search(MovieQueryParams movieQueryParams) {
+        return ResponseEntity.ok(movieRepository.search(movieQueryParams));
     }
 
     @GetMapping("/{id}")
@@ -32,6 +26,15 @@ public class MovieController {
         Movie foundMovie = movieRepository.findById(id)
                 .orElseThrow(() -> RestExceptions.resourceNotFoundException);
         return ResponseEntity.ok(foundMovie);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Movie> deleteById(@PathVariable String id) {
+        Movie movie = movieRepository
+                .findById(id)
+                .orElseThrow(() -> RestExceptions.resourceNotFoundException);
+        movieRepository.deleteById(id);
+        return ResponseEntity.ok(movie);
     }
 
     @PostMapping

@@ -34,11 +34,4 @@ public class CommentSearchRepositoryImpl implements CommentSearchRepository {
                 .matching(query)
                 .all();
     }
-
-    private Object getObjectId(String hex) {
-        if (hex == null) {
-            return null;
-        }
-        return new ObjectId(hex);
-    }
 }
