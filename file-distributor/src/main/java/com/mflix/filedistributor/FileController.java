@@ -1,21 +1,38 @@
 package com.mflix.filedistributor;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
 
 @RestController
-@RequestMapping("/movies/file")
+@RequestMapping("/movies/{id}/file")
 public class FileController {
 
-    @GetMapping
-    public void download() {
+    private final FileSaver fileSaver;
 
+    private final MovieApi movieApi;
+
+    public FileController(FileSaver fileSaver, MovieApi movieApi) {
+        this.fileSaver = fileSaver;
+        this.movieApi = movieApi;
     }
 
-    @PostMapping
-    public void upload() {
+    @GetMapping
+    public void download(@PathVariable("id") String movieId) {
+        validateMovieId(movieId);
+    }
 
+    @PostMapping(path = "", consumes = "multipart/form-data")
+    public void upload(@PathVariable("id") String movieId, @RequestParam("file") File movieFile) {
+        validateMovieId(movieId);
+        String savedFilePath = fileSaver.save(movieFile);
+        movieApi.update(movieId, new Movie(savedFilePath));
+    }
+
+    private void validateMovieId(String movieId) {
+        Movie result = movieApi.findById(movieId);
+        if (result == null) {
+            throw new RuntimeException("Resource not found");
+        }
     }
 }
