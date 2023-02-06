@@ -40,7 +40,7 @@ public class FileController {
                 .build();
     }
 
-    @PostMapping(path = "", consumes = "multipart/form-data")
+    @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<?> upload(@PathVariable("id") String movieId, @RequestParam("file") File movieFile) {
         Movie result = movieApi.findById(movieId);
         if (result == null) {
