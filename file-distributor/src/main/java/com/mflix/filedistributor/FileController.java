@@ -1,38 +1,56 @@
 package com.mflix.filedistributor;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/movies/{id}/file")
 public class FileController {
 
-    private final FileSaver fileSaver;
+    private final FileIoUtils fileIoUtils;
 
     private final MovieApi movieApi;
 
-    public FileController(FileSaver fileSaver, MovieApi movieApi) {
-        this.fileSaver = fileSaver;
+    private final ApiUrlBuilder apiUrlBuilder;
+
+    public FileController(FileIoUtils fileIoUtils, MovieApi movieApi, ApiUrlBuilder apiUrlBuilder) {
+        this.fileIoUtils = fileIoUtils;
         this.movieApi = movieApi;
+        this.apiUrlBuilder = apiUrlBuilder;
     }
 
     @GetMapping
-    public void download(@PathVariable("id") String movieId) {
-        validateMovieId(movieId);
-    }
-
-    @PostMapping(path = "", consumes = "multipart/form-data")
-    public void upload(@PathVariable("id") String movieId, @RequestParam("file") File movieFile) {
-        validateMovieId(movieId);
-        String savedFilePath = fileSaver.save(movieFile);
-        movieApi.update(movieId, new Movie(savedFilePath));
-    }
-
-    private void validateMovieId(String movieId) {
+    public ResponseEntity<?> download(@PathVariable("id") String movieId, HttpServletResponse response) throws IOException {
         Movie result = movieApi.findById(movieId);
         if (result == null) {
             throw new RuntimeException("Resource not found");
         }
+        fileIoUtils.stream(result.filePath, response.getOutputStream());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s", fileIoUtils.getPathFileName(result.filePath)))
+                .build();
+    }
+
+    @PostMapping(path = "", consumes = "multipart/form-data")
+    public ResponseEntity<?> upload(@PathVariable("id") String movieId, @RequestParam("file") File movieFile) {
+        Movie result = movieApi.findById(movieId);
+        if (result == null) {
+            throw new RuntimeException("Resource not found");
+        }
+        String savedFilePath = fileIoUtils.save(movieFile);
+        movieApi.update(movieId, new Movie(savedFilePath));
+        String uri = String.format("/movies/%s/file", movieId);
+        return ResponseEntity
+                .created(apiUrlBuilder.build(uri))
+                .build();
     }
 }
