@@ -37,7 +37,7 @@ public class MovieController {
         return ResponseEntity.ok(movie);
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<Movie> save(@RequestBody MovieRequest movieRequest) {
         Movie movie = new Movie(movieRequest.id, movieRequest.plot, movieRequest.genres, movieRequest.title,
                 movieRequest.fullPlot, movieRequest.languages, movieRequest.released, movieRequest.directors,

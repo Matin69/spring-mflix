@@ -47,7 +47,7 @@ public class FileController {
             throw new RuntimeException("Resource not found");
         }
         String savedFilePath = fileIoUtils.save(movieFile);
-        movieApi.update(movieId, new Movie(savedFilePath));
+        movieApi.update(new Movie(movieId, savedFilePath));
         String uri = String.format("/movies/%s/file", movieId);
         return ResponseEntity
                 .created(apiUrlBuilder.build(uri))

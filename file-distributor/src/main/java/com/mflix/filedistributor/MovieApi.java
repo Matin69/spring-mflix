@@ -12,6 +12,6 @@ public interface MovieApi {
     @GetMapping("/{id}")
     Movie findById(@PathVariable("id") String movieId);
 
-    @PutMapping("/{id}")
-    void update(@PathVariable("id") String movieId, @RequestBody Movie movie);
+    @PutMapping
+    void update(@RequestBody Movie movie);
 }
