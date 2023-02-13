@@ -1,4 +1,4 @@
-package com.mflix.app.security;
+package com.mflix.gateway.security;
 
 public class SignUpRequest {
 

@@ -24,6 +24,7 @@
     <modules>
         <module>app</module>
         <module>file-distributor</module>
+        <module>gateway</module>
     </modules>
 
     <dependencies>

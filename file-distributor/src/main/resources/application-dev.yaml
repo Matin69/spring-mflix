@@ -3,8 +3,8 @@ mflix:
   host: localhost
   movies:
     api:
-      url: http://localhost:8080/mflix/movies
+      url: http://localhost:8081/movies
 server:
-  port: 8081
+  port: 8082
   servlet:
-    context-path: /mflix
+    context-path: /stream

@@ -1,8 +1,11 @@
-package com.mflix.app.user;
+package com.mflix.gateway.user;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+
+import java.util.Collection;
+import java.util.Date;
 
 @Document("users")
 public class User {
@@ -15,4 +18,8 @@ public class User {
     public String email;
 
     public String password;
+
+    public Collection<String> authorities;
+
+    public Date creationDate;
 }
