@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  app:
+    build: ./app/Dockerfile
+    ports:
+      - "8081:8081"
+  file-distributor:
+    build: ./file-distributor/Dockerfile
+    ports:
+      - "8082:8082"
+  gateway:
+    build: ./gateway/Dockerfile
+    ports:
+      - "8080:8080"
