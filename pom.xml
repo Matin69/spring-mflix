@@ -23,7 +23,7 @@
 
     <modules>
         <module>app</module>
-        <module>file-distributor</module>
+        <module>stream</module>
         <module>gateway</module>
     </modules>
 

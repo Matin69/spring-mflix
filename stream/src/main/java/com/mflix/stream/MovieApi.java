@@ -1,4 +1,4 @@
-package com.mflix.filedistributor;
+package com.mflix.stream;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

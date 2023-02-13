@@ -1,4 +1,4 @@
-package com.mflix.filedistributor;
+package com.mflix.stream;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;

@@ -1,10 +1,10 @@
-package com.mflix.filedistributor;
+package com.mflix.stream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FileDistributorApplicationTests {
+class StreamApplicationTests {
 
     @Test
     void contextLoads() {

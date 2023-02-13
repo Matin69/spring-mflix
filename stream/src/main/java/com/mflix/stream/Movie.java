@@ -1,4 +1,4 @@
-package com.mflix.filedistributor;
+package com.mflix.stream;
 
 public class Movie {
 

@@ -1,4 +1,4 @@
-package com.mflix.filedistributor;
+package com.mflix.stream;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;

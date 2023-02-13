@@ -1,4 +1,4 @@
-package com.mflix.filedistributor;
+package com.mflix.stream;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-public class FileDistributorApplication {
+public class StreamApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FileDistributorApplication.class, args);
+        SpringApplication.run(StreamApplication.class, args);
     }
 
 }
