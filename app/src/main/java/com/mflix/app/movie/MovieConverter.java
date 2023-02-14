@@ -1,7 +1,9 @@
 package com.mflix.app.movie;
 
+import com.mflix.annotation.ResponseConverter;
 import com.mflix.app.common.Converter;
 
+@ResponseConverter
 public class MovieConverter implements Converter {
 
     @Override

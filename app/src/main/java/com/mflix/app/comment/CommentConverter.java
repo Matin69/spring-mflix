@@ -1,7 +1,9 @@
 package com.mflix.app.comment;
 
+import com.mflix.annotation.ResponseConverter;
 import com.mflix.app.common.Converter;
 
+@ResponseConverter
 public class CommentConverter implements Converter {
 
     @Override
