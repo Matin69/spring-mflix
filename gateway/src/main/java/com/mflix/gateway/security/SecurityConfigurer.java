@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,46 +21,22 @@ public class SecurityConfigurer {
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    private final ServicesAuthenticationProvider servicesAuthenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final UserDetailsService userDetailsService;
-
-    public SecurityConfigurer(ServicesAuthenticationProvider servicesAuthenticationProvider, UserDetailsService userDetailsService) {
-        this.servicesAuthenticationProvider = servicesAuthenticationProvider;
-        this.userDetailsService = userDetailsService;
+    public SecurityConfigurer(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager, SuccessLoginHandler successLoginHandler) throws Exception {
         if (activeProfile.equals("dev")) {
             return configDevSecurity(http);
         } else {
-            return configProductionSecurity(http);
+            return configProductionSecurity(http, authenticationManager, successLoginHandler);
         }
     }
 
-    @Bean
-    public ServicesAuthenticationFilter servicesAuthenticationFilter(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(servicesAuthenticationProvider);
-        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-        return new ServicesAuthenticationFilter(authenticationManager);
-    }
-
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        return daoAuthenticationProvider;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    private SecurityFilterChain configProductionSecurity(HttpSecurity http) throws Exception {
+    private SecurityFilterChain configProductionSecurity(HttpSecurity http, AuthenticationManager authenticationManager, SuccessLoginHandler successLoginHandler) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login").permitAll()
@@ -71,15 +46,34 @@ public class SecurityConfigurer {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterAfter(servicesAuthenticationFilter(http), ExceptionTranslationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, ExceptionTranslationFilter.class)
+                .addFilterBefore(usernamePasswordAuthenticationFilter(authenticationManager, successLoginHandler), JwtAuthenticationFilter.class)
                 .formLogin().disable()
                 .httpBasic().disable()
-                .cors().disable()
                 .csrf().disable()
+                .cors().disable()
                 .build();
     }
 
     private SecurityFilterChain configDevSecurity(HttpSecurity http) throws Exception {
         return http.build();
+    }
+
+    @Bean
+    public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager, SuccessLoginHandler successLoginHandler) throws Exception {
+        UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = new UsernamePasswordAuthenticationFilter(authenticationManager);
+        usernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(successLoginHandler);
+        return usernamePasswordAuthenticationFilter;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        return builder.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

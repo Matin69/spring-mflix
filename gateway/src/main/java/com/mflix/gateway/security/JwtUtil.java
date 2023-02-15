@@ -15,15 +15,15 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private final static String jwtRawKey = "123456789";
+    private final static String jwtRawKey = "saklnnckancdAWDNCa@QWEWDFSFVSFSDFSADSXDVFSDXVBFBDSXFBDFBBGJHZ235465YHTNJHFGqnw9283987783123812938132";
 
-    public String createJwt(User authenticatedUser) {
+    public String createJwt(User user) {
         Map<String, Object> headers = new HashMap<>();
         headers.put("alg", SignatureAlgorithm.HS256.getValue());
         headers.put("typ", "JWT");
         Map<String, Object> claims = new HashMap<>();
-        claims.put("sub", authenticatedUser.id);
-        claims.put("authorities", authenticatedUser.authorities);
+        claims.put("sub", user.id);
+        claims.put("authorities", user.authorities);
         return Jwts.builder()
                 .setHeader(headers)
                 .setClaims(claims)
