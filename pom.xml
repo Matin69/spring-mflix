@@ -22,7 +22,7 @@
     </properties>
 
     <modules>
-        <module>app</module>
+        <module>core</module>
         <module>stream</module>
         <module>gateway</module>
     </modules>
