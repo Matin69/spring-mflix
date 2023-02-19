@@ -4,3 +4,5 @@ mflix:
   movies:
     api:
       url: http://localhost:8081/core/movies
+server:
+  port: 8082
