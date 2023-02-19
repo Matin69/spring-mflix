@@ -26,7 +26,7 @@ public class SecurityUserLoader implements UserDetailsService {
         User loadedUser = userRepository.findByName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Could not found a user with given name"));
         return new org.springframework.security.core.userdetails.User(
-                loadedUser.email,
+                loadedUser.name,
                 loadedUser.password,
                 true,
                 true,
