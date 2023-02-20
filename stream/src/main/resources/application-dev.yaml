@@ -1,8 +1,6 @@
 mflix:
-  scheme: http
-  host: localhost
-  movies:
-    api:
-      url: http://localhost:8081/core/movies
+  apis:
+    core:
+      url: http://localhost:8081
 server:
   port: 8082

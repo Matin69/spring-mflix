@@ -1,2 +1,6 @@
+mflix:
+  apis:
+    core:
+      url: http://core
 server:
   port: 80

@@ -1,29 +1,19 @@
 package com.mflix.stream;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties("mflix")
 public class MflixProperties {
 
-    private String scheme;
+    @Value("${mflix.apis.core.url}")
+    private String coreUrl;
 
-    private String host;
-
-    public String getScheme() {
-        return scheme;
+    public String getCoreUrl() {
+        return coreUrl;
     }
 
-    public void setScheme(String scheme) {
-        this.scheme = scheme;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
+    public void setCoreUrl(String coreUrl) {
+        this.coreUrl = coreUrl;
     }
 }
