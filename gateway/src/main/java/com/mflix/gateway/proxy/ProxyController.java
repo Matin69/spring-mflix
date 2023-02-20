@@ -1,5 +1,6 @@
 package com.mflix.gateway.proxy;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 @RestController
 public class ProxyController {
@@ -62,6 +64,9 @@ public class ProxyController {
     }
 
     private Object obtainBody(HttpServletRequest request) {
+        if (request.getContentType() == null) {
+            return null;
+        }
         String contentType = request.getContentType().split(";")[0];
         if (contentType.equals(MediaType.MULTIPART_FORM_DATA_VALUE)) {
             StandardMultipartHttpServletRequest multipartHttpServletRequest = (StandardMultipartHttpServletRequest) request;
@@ -76,7 +81,12 @@ public class ProxyController {
                 throw new RuntimeException(e);
             }
         } else {
-            return null;
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                return objectMapper.readValue(request.getInputStream(), Map.class);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
