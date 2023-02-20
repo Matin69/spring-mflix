@@ -3,15 +3,21 @@ package com.mflix.gateway.proxy;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @RestController
 public class ProxyController {
@@ -25,8 +31,9 @@ public class ProxyController {
         this.restTemplate = new RestTemplate();
     }
 
-    @RequestMapping("/**")
-    public Object proxy(HttpServletRequest request, @RequestBody(required = false) Object body, @RequestHeader MultiValueMap<String, String> headers) {
+    @RequestMapping(value = "/**")
+    public Object proxy(HttpServletRequest request, @RequestHeader MultiValueMap<String, String> headers) {
+        Object body = obtainBody(request);
         String uri = request.getRequestURI();
         String path = uri.substring(uri.indexOf("/", 1));
         HttpMethod method = HttpMethod.valueOf(request.getMethod());
@@ -51,6 +58,25 @@ public class ProxyController {
             );
         } else {
             throw new RuntimeException();
+        }
+    }
+
+    private Object obtainBody(HttpServletRequest request) {
+        String contentType = request.getContentType().split(";")[0];
+        if (contentType.equals(MediaType.MULTIPART_FORM_DATA_VALUE)) {
+            StandardMultipartHttpServletRequest multipartHttpServletRequest = (StandardMultipartHttpServletRequest) request;
+            MultipartFile uploadedMultipartFile = multipartHttpServletRequest.getFile("movie_file");
+            try {
+                Path uploadedTempFile = Files.createTempFile(uploadedMultipartFile.getOriginalFilename(), null);
+                uploadedMultipartFile.transferTo(uploadedTempFile);
+                MultiValueMap<String, Object> proxyMultipartFormData = new LinkedMultiValueMap<>();
+                proxyMultipartFormData.add("movie_file", uploadedTempFile);
+                return proxyMultipartFormData;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            return null;
         }
     }
 

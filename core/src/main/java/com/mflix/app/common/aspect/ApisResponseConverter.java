@@ -5,7 +5,6 @@ import com.mflix.app.common.ConverterRegistry;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,22 +19,22 @@ public class ApisResponseConverter {
 
     public ResponseEntity<?> convert(ResponseEntity<?> responseEntity) {
         Object content = responseEntity.getBody();
-        List<Object> contentCollection = new ArrayList<>();
         if (content instanceof List) {
-            contentCollection = (List<Object>) content;
+            List<Object> contentCollection = (List<Object>) content;
+            Converter converter = converterRegistry.getConverter(contentCollection.get(0));
+            List<Object> convertedEntities = contentCollection
+                    .stream()
+                    .map(converter::convert)
+                    .collect(Collectors.toList());
+            return ResponseEntity
+                    .status(responseEntity.getStatusCode())
+                    .body(convertedEntities);
         } else {
-            contentCollection.add(content);
+            Converter converter = converterRegistry.getConverter(content);
+            Object convertedEntity = converter.convert(content);
+            return ResponseEntity
+                    .status(responseEntity.getStatusCode())
+                    .body(convertedEntity);
         }
-        if (contentCollection.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        Converter converter = converterRegistry.getConverter(contentCollection.get(0));
-        List<Object> convertedEntities = contentCollection
-                .stream()
-                .map(converter::convert)
-                .collect(Collectors.toList());
-        return ResponseEntity
-                .status(responseEntity.getStatusCode())
-                .body(convertedEntities);
     }
 }

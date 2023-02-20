@@ -34,6 +34,9 @@ public class FileController {
         if (result == null) {
             throw new RuntimeException("Resource not found");
         }
+        if (result.filePath == null) {
+            throw new RuntimeException("Could not find movie file");
+        }
         fileIoUtils.stream(result.filePath, response.getOutputStream());
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -43,7 +46,7 @@ public class FileController {
     }
 
     @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<?> upload(@PathVariable("id") String movieId, @RequestParam("file") File movieFile) {
+    public ResponseEntity<?> upload(@PathVariable("id") String movieId, @RequestParam("movie_file") File movieFile) {
         Movie result = movieApi.findById(movieId);
         if (result == null) {
             throw new RuntimeException("Resource not found");
