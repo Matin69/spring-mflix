@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties("mflix.distributor.dir")
+@ConfigurationProperties("mflix.stream.dir")
 public class FilesDirectoryProperties {
 
     private String path;

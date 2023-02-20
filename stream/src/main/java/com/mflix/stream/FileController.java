@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/movies/{id}/file")
@@ -18,12 +20,12 @@ public class FileController {
 
     private final MovieApi movieApi;
 
-    private final ApiUrlBuilder apiUrlBuilder;
+    private final MflixProperties mflixProperties;
 
-    public FileController(FileIoUtils fileIoUtils, MovieApi movieApi, ApiUrlBuilder apiUrlBuilder) {
+    public FileController(FileIoUtils fileIoUtils, MovieApi movieApi, MflixProperties mflixProperties) {
         this.fileIoUtils = fileIoUtils;
         this.movieApi = movieApi;
-        this.apiUrlBuilder = apiUrlBuilder;
+        this.mflixProperties = mflixProperties;
     }
 
     @GetMapping
@@ -48,9 +50,16 @@ public class FileController {
         }
         String savedFilePath = fileIoUtils.save(movieFile);
         movieApi.update(new Movie(movieId, savedFilePath));
-        String uri = String.format("/movies/%s/file", movieId);
         return ResponseEntity
-                .created(apiUrlBuilder.build(uri))
+                .created(buildUploadedFileURI(movieId))
                 .build();
+    }
+
+    public URI buildUploadedFileURI(String movieId) {
+        String uploadedFileHttpPath = String.format("/movies/%s/file", movieId);
+        return UriComponentsBuilder.fromHttpUrl(mflixProperties.getStreamUrl())
+                .path(uploadedFileHttpPath)
+                .build()
+                .toUri();
     }
 }
