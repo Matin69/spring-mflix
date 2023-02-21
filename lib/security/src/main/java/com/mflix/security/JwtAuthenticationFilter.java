@@ -1,4 +1,4 @@
-package com.mflix.gateway.security;
+package com.mflix.security;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -29,10 +29,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             {"/", "GET"}
     };
 
-    private final JwtUtil jwtUtil;
+    private final JwtParser jwtParser;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
+    public JwtAuthenticationFilter(JwtParser jwtParser) {
+        this.jwtParser = jwtParser;
     }
 
     @Override
@@ -42,9 +42,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (authorizationHeader != null) {
                 String jwt = authorizationHeader.split(" ")[1];
                 try {
-                    jwtUtil.verifyJwt(jwt);
-                    String subject = (String) jwtUtil.getClaim(jwt, "sub");
-                    List<String> authorities = (List<String>) jwtUtil.getClaim(jwt, "authorities");
+                    jwtParser.verifyJwt(jwt);
+                    String subject = (String) jwtParser.getClaim(jwt, "sub");
+                    List<String> authorities = (List<String>) jwtParser.getClaim(jwt, "authorities");
                     SecurityContext context = SecurityContextHolder.createEmptyContext();
                     context.setAuthentication(new UsernamePasswordAuthenticationToken(
                             subject,

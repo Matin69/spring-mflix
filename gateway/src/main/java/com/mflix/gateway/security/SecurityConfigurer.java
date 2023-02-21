@@ -14,41 +14,26 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
 public class SecurityConfigurer {
-
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    public SecurityConfigurer(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
 
     @Bean
     @Profile("security")
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager, SuccessLoginHandler successLoginHandler) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/signup").permitAll()
-                        .anyRequest().hasAuthority("ROLE_USER")
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtAuthenticationFilter, ExceptionTranslationFilter.class)
-                .addFilterBefore(usernamePasswordAuthenticationFilter(authenticationManager, successLoginHandler), JwtAuthenticationFilter.class)
+                .addFilterBefore(usernamePasswordAuthenticationFilter(authenticationManager, successLoginHandler), ExceptionTranslationFilter.class)
                 .formLogin().disable()
                 .httpBasic().disable()
                 .csrf().disable()
                 .cors().disable()
                 .build();
-    }
-
-    @Bean
-    @Profile("!security")
-    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.cors().disable().csrf().disable().build();
     }
 
     @Bean

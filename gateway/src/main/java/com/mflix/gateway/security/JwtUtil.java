@@ -1,7 +1,6 @@
 package com.mflix.gateway.security;
 
 import com.mflix.gateway.user.User;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -29,22 +28,6 @@ public class JwtUtil {
                 .setClaims(claims)
                 .signWith(getKey())
                 .compact();
-    }
-
-    public void verifyJwt(String jwt) {
-        Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(jwt);
-    }
-
-    public Object getClaim(String jwt, String name) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(jwt)
-                .getBody();
-        return claims.get(name);
     }
 
     private Key getKey() {
