@@ -1,8 +1,8 @@
 package com.mflix.gateway.security;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,9 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfigurer {
 
-    @Value("${spring.profiles.active}")
-    private String activeProfile;
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfigurer(JwtAuthenticationFilter jwtAuthenticationFilter) {
@@ -28,15 +25,8 @@ public class SecurityConfigurer {
     }
 
     @Bean
+    @Profile("security")
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager, SuccessLoginHandler successLoginHandler) throws Exception {
-        if (activeProfile.equals("dev")) {
-            return configDevSecurity(http);
-        } else {
-            return configProductionSecurity(http, authenticationManager, successLoginHandler);
-        }
-    }
-
-    private SecurityFilterChain configProductionSecurity(HttpSecurity http, AuthenticationManager authenticationManager, SuccessLoginHandler successLoginHandler) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login").permitAll()
@@ -55,7 +45,9 @@ public class SecurityConfigurer {
                 .build();
     }
 
-    private SecurityFilterChain configDevSecurity(HttpSecurity http) throws Exception {
+    @Bean
+    @Profile("!security")
+    public SecurityFilterChain devSecurityFilterChain(HttpSecurity http) throws Exception {
         return http.cors().disable().csrf().disable().build();
     }
 

@@ -1,8 +1,5 @@
-mflix:
-  apis:
-    core:
-      url: http://localhost:8081
-    stream:
-      url: http://localhost:8082
-server:
-  port: 8080
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://matin69:445566am@cluster0.stycvxa.mongodb.net/?retryWrites=true&w=majority
+      database: sample_mflix

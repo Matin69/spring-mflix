@@ -33,7 +33,7 @@ public class ConverterProcessor extends AbstractProcessor {
             try {
                 JavaFileObject configurationFile = processingEnv.getFiler().createSourceFile("ConverterConfiguration");
                 try (PrintWriter out = new PrintWriter(configurationFile.openWriter())) {
-                    out.println("package com.mflix.app.common;");
+                    out.println("package com.mflix.core.common;");
                     out.println();
                     for (String annotatedFullClassName : annotatedFullClassNames) {
                         out.println(String.format("import %s;", annotatedFullClassName));
