@@ -5,10 +5,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class AbstractQueryParams implements QueryParams {
+
+    private final static int DEFAULT_PAGE = 0;
+
+    private final static int DEFAULT_PAGE_SIZE = 10;
 
     private Integer page;
 
@@ -18,11 +21,10 @@ public abstract class AbstractQueryParams implements QueryParams {
 
     @Override
     public Pageable getPagination() {
-        return PageRequest.of(page, size, getQuerySort());
+        return PageRequest.of(getPage(), getSize(), obtainSort());
     }
 
-    @Override
-    public Sort getQuerySort() {
+    public Sort obtainSort() {
         if (sort == null) {
             return Sort.unsorted();
         }
@@ -44,19 +46,19 @@ public abstract class AbstractQueryParams implements QueryParams {
     }
 
     public Integer getPage() {
-        return page;
+        return (page != null) ? page : DEFAULT_PAGE;
     }
 
     public void setPage(Integer page) {
-        this.page = Objects.requireNonNullElse(page, 0);
+        this.page = page;
     }
 
     public Integer getSize() {
-        return size;
+        return (size != null) ? size : DEFAULT_PAGE_SIZE;
     }
 
     public void setSize(Integer size) {
-        this.size = Objects.requireNonNullElse(size, 10);
+        this.size = size;
     }
 
     public String getSort() {

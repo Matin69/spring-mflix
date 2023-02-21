@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -46,12 +46,12 @@ public class FileController {
     }
 
     @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<?> upload(@PathVariable("id") String movieId, @RequestParam("movie_file") File movieFile) {
+    public ResponseEntity<?> upload(@PathVariable("id") String movieId, @RequestParam("movie_file") MultipartFile uploadedFilePart) {
         Movie result = movieApi.findById(movieId);
         if (result == null) {
             throw new RuntimeException("Resource not found");
         }
-        String savedFilePath = fileIoUtils.save(movieFile);
+        String savedFilePath = fileIoUtils.save(uploadedFilePart);
         movieApi.update(new Movie(movieId, savedFilePath));
         return ResponseEntity
                 .created(buildUploadedFileURI(movieId))

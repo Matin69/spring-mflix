@@ -2,10 +2,9 @@ package com.mflix.stream;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,15 +17,13 @@ public class FileIoUtils {
         this.filesDirectoryProperties = filesDirectoryProperties;
     }
 
-    public String save(File file) {
-        String saveFileName = new SimpleDateFormat("yyMMdd-hhmmss.mp4").format(new Date());
+    public String save(MultipartFile multipartFile) {
+        String currentTime = new SimpleDateFormat("yyMMdd-hhmmss").format(new Date());
+        String saveFileName = String.format("%s.mp4", currentTime);
         String saveFilePath = filesDirectoryProperties.getPath() + File.separator + saveFileName;
         try {
-            Path savedPath = Files.copy(
-                    file.toPath(),
-                    Path.of(saveFilePath)
-            );
-            return savedPath.toString();
+            multipartFile.transferTo(new File(saveFilePath));
+            return saveFilePath;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
