@@ -1,14 +1,29 @@
 version: "3.9"
 services:
-  app:
+  core:
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev, docker"
     build: ./app/Dockerfile
     ports:
       - "8081:8081"
-  file-distributor:
+    networks:
+      - mflix-network
+  stream:
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev, docker"
     build: ./stream/Dockerfile
     ports:
       - "8082:8082"
+    networks:
+      - mflix-network
   gateway:
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev, docker"
     build: ./gateway/Dockerfile
     ports:
       - "8080:8080"
+    networks:
+      - mflix-network
+networks:
+  mflix-network:
+    driver: bridge
