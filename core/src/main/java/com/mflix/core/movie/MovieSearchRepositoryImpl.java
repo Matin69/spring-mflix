@@ -3,6 +3,8 @@ package com.mflix.core.movie;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public class MovieSearchRepositoryImpl implements MovieSearchRepository {
     }
 
     @Override
-    public List<Movie> search(MovieQueryParams movieQueryParams) {
+    public List<Movie> query(MovieQueryParams movieQueryParams) {
         Criteria criteria = new Criteria();
         if (movieQueryParams.getYear() != null) {
             criteria = where("year").is(movieQueryParams.getYear());
@@ -32,5 +34,14 @@ public class MovieSearchRepositoryImpl implements MovieSearchRepository {
         return mongoTemplate.query(Movie.class)
                 .matching(query)
                 .all();
+    }
+
+    @Override
+    public List<Movie> search(String searchText) {
+        TextQuery textQuery = TextQuery
+                .queryText(new TextCriteria().matching(searchText))
+                .sortByScore()
+                .includeScore();
+        return mongoTemplate.find(textQuery, Movie.class);
     }
 }

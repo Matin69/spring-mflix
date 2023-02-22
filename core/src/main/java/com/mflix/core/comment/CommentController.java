@@ -20,7 +20,7 @@ public class CommentController {
 
     @GetMapping
     public ResponseEntity<List<Comment>> search(CommentQueryParams commentQueryParams) {
-        return ResponseEntity.ok(mongoCommentRepository.search(commentQueryParams));
+        return ResponseEntity.ok(mongoCommentRepository.query(commentQueryParams));
     }
 
     @GetMapping("/{id}")

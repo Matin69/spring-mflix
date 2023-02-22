@@ -20,7 +20,7 @@ public class CommentSearchRepositoryImpl implements CommentSearchRepository {
     }
 
     @Override
-    public List<Comment> search(CommentQueryParams commentQueryParams) {
+    public List<Comment> query(CommentQueryParams commentQueryParams) {
         Criteria criteria = new Criteria();
         if (commentQueryParams.getEmail() != null) {
             criteria = where("email").is(commentQueryParams.getEmail());
@@ -33,5 +33,10 @@ public class CommentSearchRepositoryImpl implements CommentSearchRepository {
         return mongoTemplate.query(Comment.class)
                 .matching(query)
                 .all();
+    }
+
+    @Override
+    public List<Comment> search(String searchText) {
+        return null;
     }
 }

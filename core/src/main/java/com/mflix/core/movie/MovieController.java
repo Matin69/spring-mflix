@@ -16,9 +16,14 @@ public class MovieController {
         this.movieRepository = movieRepository;
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Movie>> search(@RequestParam("text") String searchText) {
+        return ResponseEntity.ok(movieRepository.search(searchText));
+    }
+
     @GetMapping
-    public ResponseEntity<List<Movie>> search(MovieQueryParams movieQueryParams) {
-        return ResponseEntity.ok(movieRepository.search(movieQueryParams));
+    public ResponseEntity<List<Movie>> query(MovieQueryParams movieQueryParams) {
+        return ResponseEntity.ok(movieRepository.query(movieQueryParams));
     }
 
     @GetMapping("/{id}")
