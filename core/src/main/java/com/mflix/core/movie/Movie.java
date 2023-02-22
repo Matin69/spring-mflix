@@ -40,14 +40,16 @@ public class Movie {
 
     public Tomatoes tomatoes;
 
+    public String filePath;
+
     public Movie() {
     }
 
-    public Movie(String plot, String[] genres, String title, String fullPlot, String[] languages, Date released, String[] directors, String rated, Awards awards, String year, Imdb imdb, String[] countries, String type, Tomatoes tomatoes) {
-        this(null, plot, genres, title, fullPlot, languages, released, directors, rated, awards, year, imdb, countries, type, tomatoes);
+    public Movie(String plot, String[] genres, String title, String fullPlot, String[] languages, Date released, String[] directors, String rated, Awards awards, String year, Imdb imdb, String[] countries, String type, Tomatoes tomatoes, String filePath) {
+        this(null, plot, genres, title, fullPlot, languages, released, directors, rated, awards, year, imdb, countries, type, tomatoes, filePath);
     }
 
-    public Movie(String id, String plot, String[] genres, String title, String fullPlot, String[] languages, Date released, String[] directors, String rated, Awards awards, String year, Imdb imdb, String[] countries, String type, Tomatoes tomatoes) {
+    public Movie(String id, String plot, String[] genres, String title, String fullPlot, String[] languages, Date released, String[] directors, String rated, Awards awards, String year, Imdb imdb, String[] countries, String type, Tomatoes tomatoes, String filePath) {
         this.id = id;
         this.plot = plot;
         this.genres = genres;
@@ -63,5 +65,6 @@ public class Movie {
         this.countries = countries;
         this.type = type;
         this.tomatoes = tomatoes;
+        this.filePath = filePath;
     }
 }

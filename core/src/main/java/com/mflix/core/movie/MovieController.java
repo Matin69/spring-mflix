@@ -42,7 +42,7 @@ public class MovieController {
         Movie movie = new Movie(movieRequest.id, movieRequest.plot, movieRequest.genres, movieRequest.title,
                 movieRequest.fullPlot, movieRequest.languages, movieRequest.released, movieRequest.directors,
                 movieRequest.rated, movieRequest.awards, movieRequest.year, movieRequest.imdb,
-                movieRequest.countries, movieRequest.type, movieRequest.tomatoes);
+                movieRequest.countries, movieRequest.type, movieRequest.tomatoes, movieRequest.filePath);
         Movie savedMovie = movieRepository.save(movie);
         return ResponseEntity.ok(savedMovie);
     }

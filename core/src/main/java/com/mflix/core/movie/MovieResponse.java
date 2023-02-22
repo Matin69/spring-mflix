@@ -34,7 +34,9 @@ public class MovieResponse {
 
     public Tomatoes tomatoes;
 
-    public MovieResponse(String id, String plot, String[] genres, String title, String fullPlot, String[] languages, Date released, String[] directors, String rated, Awards awards, String year, Imdb imdb, String[] countries, String type, Tomatoes tomatoes) {
+    public String filePath;
+
+    public MovieResponse(String id, String plot, String[] genres, String title, String fullPlot, String[] languages, Date released, String[] directors, String rated, Awards awards, String year, Imdb imdb, String[] countries, String type, Tomatoes tomatoes, String filePath) {
         this.id = id;
         this.plot = plot;
         this.genres = genres;
@@ -50,5 +52,6 @@ public class MovieResponse {
         this.countries = countries;
         this.type = type;
         this.tomatoes = tomatoes;
+        this.filePath = filePath;
     }
 }

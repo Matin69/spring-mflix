@@ -11,7 +11,7 @@ public class MovieConverter implements Converter {
         Movie movie = (Movie) obj;
         return new MovieResponse(movie.id, movie.plot, movie.genres, movie.title, movie.fullPlot, movie.languages,
                 movie.released, movie.directors, movie.rated, movie.awards, movie.year, movie.imdb, movie.countries,
-                movie.type, movie.tomatoes);
+                movie.type, movie.tomatoes, movie.filePath);
     }
 
     @Override

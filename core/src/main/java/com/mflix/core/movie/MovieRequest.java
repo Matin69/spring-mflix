@@ -33,4 +33,6 @@ public class MovieRequest {
     public String type;
 
     public Tomatoes tomatoes;
+
+    public String filePath;
 }
