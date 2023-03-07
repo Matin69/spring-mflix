@@ -23,9 +23,10 @@
     </properties>
 
     <modules>
-        <module>core</module>
         <module>stream</module>
         <module>gateway</module>
+        <module>comment</module>
+        <module>movie</module>
     </modules>
 
     <dependencies>
@@ -43,6 +44,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mflix</groupId>
+            <artifactId>core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
