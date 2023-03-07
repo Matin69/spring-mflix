@@ -1,5 +1,6 @@
 package com.mflix.gateway.security;
 
+import com.mflix.gateway.user.RoleRepository;
 import com.mflix.gateway.user.User;
 import com.mflix.gateway.user.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,13 @@ public class SignUpController {
 
     private final PasswordEncoder passwordEncoder;
 
-    public SignUpController(JwtUtil jwtUtil, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private final RoleRepository roleRepository;
+
+    public SignUpController(JwtUtil jwtUtil, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @PostMapping("/signup")
@@ -33,7 +37,7 @@ public class SignUpController {
         user.email = signUpRequest.email;
         user.password = passwordEncoder.encode(signUpRequest.password);
         user.creationDate = new Date();
-        user.authorities = Collections.singleton("ROLE_USER");
+        user.roles = Collections.singletonList(roleRepository.findByName("USER").orElseThrow());
         userRepository.save(user);
         String jwt = jwtUtil.createJwt(user);
         return ResponseEntity.ok(jwt);

@@ -1,5 +1,6 @@
 package com.mflix.gateway.security;
 
+import com.mflix.gateway.user.Role;
 import com.mflix.gateway.user.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,8 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class JwtUtil {
@@ -22,7 +22,7 @@ public class JwtUtil {
         headers.put("typ", "JWT");
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", user.id);
-        claims.put("authorities", user.authorities);
+        claims.put("authorities", getAuthorities(user));
         return Jwts.builder()
                 .setHeader(headers)
                 .setClaims(claims)
@@ -32,5 +32,13 @@ public class JwtUtil {
 
     private Key getKey() {
         return Keys.hmacShaKeyFor(jwtRawKey.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private Collection<String> getAuthorities(User loadedUser) {
+        List<String> authorities = new ArrayList<>();
+        for (Role role : loadedUser.roles) {
+            authorities.addAll(role.permissions);
+        }
+        return authorities;
     }
 }
