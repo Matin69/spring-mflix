@@ -1,7 +1,9 @@
 mflix:
   apis:
-    core:
+    movie:
       url: http://localhost:8081
+    comment:
+      url: http://localhost:8083
     stream:
       url: http://localhost:8082
 server:

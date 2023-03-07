@@ -28,13 +28,12 @@ public class ProxyController {
     @RequestMapping(value = "/**")
     public Object proxy(HttpServletRequest request, @RequestBody(required = false) Object body, @RequestHeader MultiValueMap<String, String> headers) {
         String uri = request.getRequestURI();
-        String path = uri.substring(uri.indexOf("/", 1));
         HttpMethod method = HttpMethod.valueOf(request.getMethod());
         String queryParams = request.getQueryString();
-        if (uri.startsWith("/core")) {
+        if (uri.startsWith("/movies")) {
             return route(
-                    routesProperties.getCoreUrl(),
-                    path,
+                    routesProperties.getMovieUrl(),
+                    uri,
                     queryParams,
                     method,
                     headers,
@@ -43,7 +42,16 @@ public class ProxyController {
         } else if (uri.startsWith("/stream")) {
             return route(
                     routesProperties.getStreamUrl(),
-                    path,
+                    uri,
+                    queryParams,
+                    method,
+                    headers,
+                    body
+            );
+        } else if (uri.startsWith("/comment")) {
+            return route(
+                    routesProperties.getCommentUrl(),
+                    uri,
                     queryParams,
                     method,
                     headers,

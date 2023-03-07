@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/movies/{id}/file")
+@RequestMapping("/stream/movies/{id}")
 public class FileController {
 
     private final FileIoUtils fileIoUtils;
@@ -59,7 +59,7 @@ public class FileController {
     }
 
     public URI buildUploadedFileURI(String movieId) {
-        String uploadedFileHttpPath = String.format("/movies/%s/file", movieId);
+        String uploadedFileHttpPath = String.format("/stream/movies/%s", movieId);
         return UriComponentsBuilder.fromHttpUrl(mflixProperties.getStreamUrl())
                 .path(uploadedFileHttpPath)
                 .build()

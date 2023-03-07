@@ -6,18 +6,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class RoutesProperties {
 
-    @Value("${mflix.apis.core.url}")
-    private String coreUrl;
+    @Value("${mflix.apis.movie.url}")
+    private String movieUrl;
+
+    @Value("${mflix.apis.comment.url}")
+    private String commentUrl;
 
     @Value("${mflix.apis.stream.url}")
     private String streamUrl;
 
-    public String getCoreUrl() {
-        return coreUrl;
+    public String getMovieUrl() {
+        return movieUrl;
     }
 
-    public void setCoreUrl(String coreUrl) {
-        this.coreUrl = coreUrl;
+    public void setMovieUrl(String movieUrl) {
+        this.movieUrl = movieUrl;
     }
 
     public String getStreamUrl() {
@@ -26,5 +29,13 @@ public class RoutesProperties {
 
     public void setStreamUrl(String streamUrl) {
         this.streamUrl = streamUrl;
+    }
+
+    public String getCommentUrl() {
+        return commentUrl;
+    }
+
+    public void setCommentUrl(String commentUrl) {
+        this.commentUrl = commentUrl;
     }
 }
