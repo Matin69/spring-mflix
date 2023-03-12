@@ -1,0 +1,5 @@
+TO DO:
+- Create an architecture for services communication
+- Handle security in the new architecture from both service-to-service and user-to-service usages
+- Split database collections for each microservice
+- Create a business function that forces transaction between multiple services (saga pattern)
