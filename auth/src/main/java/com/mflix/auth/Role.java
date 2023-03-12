@@ -1,10 +1,7 @@
-package com.mflix.gateway.user;
-
-import org.springframework.data.mongodb.core.mapping.Document;
+package com.mflix.auth;
 
 import java.util.List;
 
-@Document("roles")
 public class Role {
 
     public String name;

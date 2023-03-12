@@ -1,7 +1,5 @@
-package com.mflix.gateway.security;
+package com.mflix.auth;
 
-import com.mflix.gateway.user.User;
-import com.mflix.gateway.user.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,17 +14,17 @@ public class SuccessLoginHandler implements AuthenticationSuccessHandler {
 
     private final JwtUtil jwtUtil;
 
-    private final UserRepository userRepository;
+    private final UserApi userApi;
 
-    public SuccessLoginHandler(JwtUtil jwtUtil, UserRepository userRepository) {
+    public SuccessLoginHandler(JwtUtil jwtUtil, UserApi userApi) {
         this.jwtUtil = jwtUtil;
-        this.userRepository = userRepository;
+        this.userApi = userApi;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String username = authentication.getName();
-        User authenticatedUser = userRepository.findByName(username).orElseThrow();
+        User authenticatedUser = userApi.search(new UserSearchParams(username));
         String jwt = jwtUtil.createJwt(authenticatedUser);
         response.getOutputStream().print(jwt);
     }

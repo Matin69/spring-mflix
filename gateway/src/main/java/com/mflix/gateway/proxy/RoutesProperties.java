@@ -15,6 +15,12 @@ public class RoutesProperties {
     @Value("${mflix.apis.stream.url}")
     private String streamUrl;
 
+    @Value("${mflix.apis.auth.url}")
+    private String authUrl;
+
+    @Value("${mflix.apis.user.url}")
+    private String userUrl;
+
     public String getMovieUrl() {
         return movieUrl;
     }
@@ -37,5 +43,21 @@ public class RoutesProperties {
 
     public void setCommentUrl(String commentUrl) {
         this.commentUrl = commentUrl;
+    }
+
+    public String getAuthUrl() {
+        return authUrl;
+    }
+
+    public void setAuthUrl(String authUrl) {
+        this.authUrl = authUrl;
+    }
+
+    public String getUserUrl() {
+        return userUrl;
+    }
+
+    public void setUserUrl(String userUrl) {
+        this.userUrl = userUrl;
     }
 }

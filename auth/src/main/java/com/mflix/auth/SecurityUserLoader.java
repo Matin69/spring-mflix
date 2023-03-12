@@ -1,8 +1,5 @@
-package com.mflix.gateway.security;
+package com.mflix.auth;
 
-import com.mflix.gateway.user.Role;
-import com.mflix.gateway.user.User;
-import com.mflix.gateway.user.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,16 +15,15 @@ import java.util.stream.Collectors;
 @Component
 public class SecurityUserLoader implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserApi userApi;
 
-    public SecurityUserLoader(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public SecurityUserLoader(UserApi userApi) {
+        this.userApi = userApi;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User loadedUser = userRepository.findByName(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Could not found a user with given name"));
+        User loadedUser = userApi.search(new UserSearchParams(username));
         return new org.springframework.security.core.userdetails.User(
                 loadedUser.name,
                 loadedUser.password,

@@ -1,7 +1,5 @@
-package com.mflix.gateway.security;
+package com.mflix.auth;
 
-import com.mflix.gateway.user.Role;
-import com.mflix.gateway.user.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

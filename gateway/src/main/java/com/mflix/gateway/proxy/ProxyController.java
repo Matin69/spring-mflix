@@ -48,9 +48,27 @@ public class ProxyController {
                     headers,
                     body
             );
-        } else if (uri.startsWith("/comment")) {
+        } else if (uri.startsWith("/comments")) {
             return route(
                     routesProperties.getCommentUrl(),
+                    uri,
+                    queryParams,
+                    method,
+                    headers,
+                    body
+            );
+        } else if (uri.startsWith("/users")) {
+            return route(
+                    routesProperties.getUserUrl(),
+                    uri,
+                    queryParams,
+                    method,
+                    headers,
+                    body
+            );
+        } else if (uri.startsWith("/auth")) {
+            return route(
+                    routesProperties.getAuthUrl(),
                     uri,
                     queryParams,
                     method,

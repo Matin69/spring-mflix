@@ -1,4 +1,4 @@
-package com.mflix.gateway.user;
+package com.mflix.user;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

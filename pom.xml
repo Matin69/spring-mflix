@@ -27,6 +27,8 @@
         <module>gateway</module>
         <module>comment</module>
         <module>movie</module>
+        <module>user</module>
+        <module>auth</module>
     </modules>
 
     <dependencies>

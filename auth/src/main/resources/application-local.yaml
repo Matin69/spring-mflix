@@ -1,5 +1,7 @@
 server:
-  port: 8081
+  port: 8085
+  servlet:
+    context-path: /auth
 mflix:
   apis:
     movie:

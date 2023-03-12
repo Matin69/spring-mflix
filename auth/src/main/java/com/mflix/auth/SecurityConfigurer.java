@@ -1,4 +1,4 @@
-package com.mflix.gateway.security;
+package com.mflix.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
