@@ -3,3 +3,9 @@ TO DO:
 - Handle security in the new architecture from both service-to-service and user-to-service usages
 - Split database collections for each microservice
 - Create a business function that forces transaction between multiple services (saga pattern)
+ Microservices Query for join data:
+ - For example we implement an api for getting movies_comments and to join these services we use api composer and api composer joins data in memory and returns it back to gateway to get it to the user.
+   so we need to create a third service (composer) that users services discovery to find underlying services and query them.
+ Security:
+ - For security flow we have user that is either a machine or a person, for both we give them the same access token but for machines we give them full access and permissions.
+  another thing is that the endpoint for machine authentication is different from person one, It's uses basic auth for authentication
