@@ -23,19 +23,16 @@
     </properties>
 
     <modules>
-        <module>stream</module>
-        <module>gateway</module>
-        <module>comment</module>
-        <module>movie</module>
-        <module>user</module>
-        <module>auth</module>
+        <module>gateway-sc</module>
+        <module>comment-sc</module>
+        <module>movie-sc</module>
+        <module>user-sc</module>
+        <module>auth-sc</module>
+        <module>discovery-sc</module>
+        <module>config-sc</module>
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
