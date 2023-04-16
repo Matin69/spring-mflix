@@ -23,13 +23,13 @@
     </properties>
 
     <modules>
-        <module>gateway-sc</module>
-        <module>comment-sc</module>
-        <module>movie-sc</module>
-        <module>user-sc</module>
-        <module>auth-sc</module>
-        <module>discovery-sc</module>
-        <module>config-sc</module>
+        <module>mflix-gateway-sc</module>
+        <module>mflix-comment-sc</module>
+        <module>mflix-movie-sc</module>
+        <module>mflix-user-sc</module>
+        <module>mflix-auth-sc</module>
+        <module>mflix-discovery-sc</module>
+        <module>mflix-config-sc</module>
     </modules>
 
     <dependencies>
