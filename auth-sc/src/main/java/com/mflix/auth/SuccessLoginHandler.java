@@ -24,7 +24,7 @@ public class SuccessLoginHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String username = authentication.getName();
-        User authenticatedUser = userApi.search(new UserSearchParams(username));
+        User authenticatedUser = userApi.search(username);
         String jwt = jwtUtil.createJwt(authenticatedUser);
         response.getOutputStream().print(jwt);
     }

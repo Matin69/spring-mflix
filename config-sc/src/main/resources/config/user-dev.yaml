@@ -1,7 +1,7 @@
-server:
-  port: 8083
 spring:
   data:
     mongodb:
       uri: mongodb+srv://matin69:445566am@cluster0.stycvxa.mongodb.net/?retryWrites=true&w=majority
       database: sample_mflix
+server:
+  port: 8083

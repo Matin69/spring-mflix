@@ -23,7 +23,7 @@ public class SecurityUserLoader implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User loadedUser = userApi.search(new UserSearchParams(username));
+        User loadedUser = userApi.search(username);
         return new org.springframework.security.core.userdetails.User(
                 loadedUser.name,
                 loadedUser.password,

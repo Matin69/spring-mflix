@@ -17,6 +17,11 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @GetMapping
+    public ResponseEntity<User> search(@RequestParam("username") String username) {
+        return null;
+    }
+
     @GetMapping("/me")
     public ResponseEntity<User> getMe() {
         return null;

@@ -15,14 +15,11 @@ public class SignUpController {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final RoleApi roleApi;
-
     private final UserApi userApi;
 
-    public SignUpController(JwtUtil jwtUtil, PasswordEncoder passwordEncoder, RoleApi roleApi, UserApi userApi) {
+    public SignUpController(JwtUtil jwtUtil, PasswordEncoder passwordEncoder, UserApi userApi) {
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
-        this.roleApi = roleApi;
         this.userApi = userApi;
     }
 
@@ -32,7 +29,7 @@ public class SignUpController {
         userRequest.name = signUpRequest.name;
         userRequest.email = signUpRequest.email;
         userRequest.password = passwordEncoder.encode(signUpRequest.password);
-        userRequest.roles = Collections.singletonList(roleApi.search(new RoleSearchParams("USER")));
+        userRequest.roles = Collections.singletonList(userApi.searchRoles(new RoleSearchParams("USER")));
         User savedUser = userApi.save(userRequest);
         savedUser.roles = userRequest.roles;
         String jwt = jwtUtil.createJwt(savedUser);
