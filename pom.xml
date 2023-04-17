@@ -30,6 +30,8 @@
         <module>mflix-auth-sc</module>
         <module>mflix-discovery-sc</module>
         <module>mflix-config-sc</module>
+        <module>mflix-movie-composition-sc</module>
+        <module>mflix-domain-gateway-sc</module>
     </modules>
 
     <dependencies>
