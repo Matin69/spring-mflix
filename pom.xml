@@ -31,7 +31,7 @@
         <module>mflix-discovery-sc</module>
         <module>mflix-config-sc</module>
         <module>mflix-movie-composition-sc</module>
-        <module>mflix-domain-gateway-sc</module>
+        <module>mflix-spa-gateway-sc</module>
     </modules>
 
     <dependencies>

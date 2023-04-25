@@ -1,5 +1,5 @@
 spring:
   application:
-    name: domain_gateway
+    name: spaGateway
   config:
     import: optional:configserver:http://localhost:8888

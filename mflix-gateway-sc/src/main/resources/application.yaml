@@ -4,18 +4,10 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: movie-sc-route
-          uri: lb://movie
+        - id: spaGateway
+          uri: lb://spaGateway
           predicates:
-            - Path=/movies/**
-        - id: comment-sc-route
-          uri: lb://comment
-          predicates:
-            - Path=/comments/**
-        - id: auth-sc-route
-          uri: lb://auth
-          predicates:
-            - Path=/login, /signup
+            - Path=/**
       discovery:
         locator:
           enabled: true
