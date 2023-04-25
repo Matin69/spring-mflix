@@ -1,5 +1,19 @@
 spring:
   application:
     name: spaGateway
-  config:
-    import: optional:configserver:http://localhost:8888
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: spaMovie
+          uri: lb://spaMovie
+          predicates:
+            - Path=/movies/{id}
+        - id: movie
+          uri: lb://movie
+          predicates:
+            - Path=/movies/**
+server:
+  port: 9090

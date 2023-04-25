@@ -1,12 +1,12 @@
-package com.mflix.domain_gateway;
+package com.mflix.movie.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient("movieComposition")
-public interface MovieCompositionApi {
+@FeignClient("movie")
+public interface MoviesApi {
 
-    @GetMapping("/composition/movies/{id}")
+    @GetMapping("/movies/{id}")
     Object findById(@PathVariable String id);
 }

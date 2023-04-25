@@ -6,9 +6,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-public class MovieCompositionServiceApplication {
+public class SpaMovieServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MovieCompositionServiceApplication.class, args);
+        SpringApplication.run(SpaMovieServiceApplication.class, args);
     }
 }
