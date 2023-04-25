@@ -1,4 +1,4 @@
-package com.mflix.movie_composition;
+package com.mflix.movie;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

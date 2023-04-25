@@ -1,4 +1,4 @@
-package com.mflix.movie_composition;
+package com.mflix.movie;
 
 public class CommentsSearchQueryParams {
 

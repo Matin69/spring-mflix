@@ -7,7 +7,7 @@
         <artifactId>mflix</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>mflix-movie-composition-sc</artifactId>
+    <artifactId>mflix-spa-movie-sc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
         <java.version>17</java.version>

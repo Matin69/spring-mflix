@@ -30,7 +30,7 @@
         <module>mflix-auth-sc</module>
         <module>mflix-discovery-sc</module>
         <module>mflix-config-sc</module>
-        <module>mflix-movie-composition-sc</module>
+        <module>mflix-spa-movie-sc</module>
         <module>mflix-spa-gateway-sc</module>
     </modules>
 

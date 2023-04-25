@@ -1,4 +1,4 @@
-package com.mflix.movie_composition;
+package com.mflix.movie;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
