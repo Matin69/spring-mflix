@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface CommentsApi {
 
     @GetMapping("/comments")
-    Object search(CommentsQueryParams commentsQueryParams);
+    Object search(CommentQueryParams commentQueryParams);
 }

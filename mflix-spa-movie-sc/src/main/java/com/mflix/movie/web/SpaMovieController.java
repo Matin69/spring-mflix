@@ -1,7 +1,7 @@
 package com.mflix.movie.web;
 
+import com.mflix.movie.api.CommentQueryParams;
 import com.mflix.movie.api.CommentsApi;
-import com.mflix.movie.api.CommentsQueryParams;
 import com.mflix.movie.api.MoviesApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +24,10 @@ public class SpaMovieController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SpaMovieResponse> findById(@PathVariable String id) {
-        CommentsQueryParams commentsQueryParams = new CommentsQueryParams();
-        commentsQueryParams.movieId = id;
+        CommentQueryParams commentQueryParams = new CommentQueryParams();
+        commentQueryParams.movieId = id;
         Object movie = moviesApi.findById(id);
-        Object comments = commentsApi.search(commentsQueryParams);
+        Object comments = commentsApi.search(commentQueryParams);
         SpaMovieResponse spaMovieResponse = new SpaMovieResponse(movie, comments);
         return ResponseEntity.ok(spaMovieResponse);
     }
