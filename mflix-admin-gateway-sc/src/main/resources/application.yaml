@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: adminGateway
+server:
+  port: 9191
