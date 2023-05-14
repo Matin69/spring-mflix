@@ -32,8 +32,7 @@
         <module>mflix-config-sc</module>
         <module>mflix-spa-movie-sc</module>
         <module>mflix-spa-gateway-sc</module>
-        <module>mflix-admin-gateway-sc</module>
-        <module>mflix-admin-movie-sc</module>
+        <module>mflix-admin-gateway-service</module>
     </modules>
 
     <dependencies>

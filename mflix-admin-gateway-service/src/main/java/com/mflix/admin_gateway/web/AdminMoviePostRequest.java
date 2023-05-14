@@ -1,10 +1,12 @@
-package com.mflix.movie;
+package com.mflix.admin_gateway.web;
+
+import com.mflix.admin_gateway.api.Awards;
+import com.mflix.admin_gateway.api.Imdb;
+import com.mflix.admin_gateway.api.Tomatoes;
 
 import java.util.Date;
 
-public class MovieRequest {
-
-    public String id;
+public class AdminMoviePostRequest {
 
     public String plot;
 
@@ -33,6 +35,4 @@ public class MovieRequest {
     public String type;
 
     public Tomatoes tomatoes;
-
-    public String filePath;
 }

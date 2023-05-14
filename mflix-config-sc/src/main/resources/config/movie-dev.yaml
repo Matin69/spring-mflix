@@ -5,3 +5,9 @@ spring:
       database: sample_mflix
 server:
   port: 8081
+mflix:
+  movie:
+    file:
+      repository:
+        dir:
+          path: /home/matin69/MflixMovies

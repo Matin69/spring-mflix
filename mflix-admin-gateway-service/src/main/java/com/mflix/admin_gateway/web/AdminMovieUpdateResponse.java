@@ -1,10 +1,12 @@
-package com.mflix.movie;
+package com.mflix.admin_gateway.web;
+
+import com.mflix.admin_gateway.api.Awards;
+import com.mflix.admin_gateway.api.Imdb;
+import com.mflix.admin_gateway.api.Tomatoes;
 
 import java.util.Date;
 
-public class MovieResponse {
-
-    public String id;
+public class AdminMovieUpdateResponse {
 
     public String plot;
 
@@ -34,10 +36,7 @@ public class MovieResponse {
 
     public Tomatoes tomatoes;
 
-    public String filePath;
-
-    public MovieResponse(String id, String plot, String[] genres, String title, String fullPlot, String[] languages, Date released, String[] directors, String rated, Awards awards, String year, Imdb imdb, String[] countries, String type, Tomatoes tomatoes, String filePath) {
-        this.id = id;
+    public AdminMovieUpdateResponse(String plot, String[] genres, String title, String fullPlot, String[] languages, Date released, String[] directors, String rated, Awards awards, String year, Imdb imdb, String[] countries, String type, Tomatoes tomatoes) {
         this.plot = plot;
         this.genres = genres;
         this.title = title;
@@ -52,6 +51,5 @@ public class MovieResponse {
         this.countries = countries;
         this.type = type;
         this.tomatoes = tomatoes;
-        this.filePath = filePath;
     }
 }

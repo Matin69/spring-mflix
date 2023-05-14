@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: spaGateway
+          uri: lb://spaGateway
+          predicates:
+            - Path=/spa/**
+          filters:
+            - RewritePath=/spa/(?<segment>.*), /$\{segment}
+        - id: adminGateway
+          uri: lb://adminGateway
+          predicates:
+            - Path=/admin/**
+          filters:
+            - RewritePath=/admin/(?<segment>.*), /$\{segment}
+      discovery:
+        locator:
+          enabled: true
